@@ -12,5 +12,8 @@
   "type": "commonjs",
   "dependencies": {
     "serve": "^14.2.6"
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.34.1"
   }
 }
