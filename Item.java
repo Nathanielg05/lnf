@@ -9,7 +9,7 @@ public class Item {
     private String foundername;
     private String whenfound;
     
-    //For new
+    //For new submission
     public Item(String status, String category, String description, String locationFound, String foundername){
         this.status=status;
         this.category=category;
