@@ -25,5 +25,5 @@ jobs:
         with:
           args: deploy --only hosting
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PROJECT_ID: lost-and-found-app-57844
+          GCP_SA_Key: ${{ secrets.GCP_SA_KEY }}
+          PROJECT_ID: lost-and-found-fdbb0
