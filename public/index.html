@@ -41,25 +41,37 @@
                     <option value="Keys">Keys</option>
                     <option value="Wallet/ID">Wallet / ID</option>
                     <option value="Clothing">Clothing</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Other">Other</option>
                 </select>
             </div>
 
-           <!--Modified11/02/26 by Aaron:--> 
-           <div class="form-group">
-                <label for="Color">Color (Descriptor):</label>
-                <select id="Color" required>
-                    <option value="">-- Select Category --</option>
+            <!-- Modular Color Descriptor -->
+            <div class="form-group">
+                <label for="color">Color (Descriptor):</label>
+                <select id="color" required>
+                    <option value="">-- Select Color --</option>
                     <option value="Red">Red</option>
                     <option value="Blue">Blue</option>
                     <option value="Black">Black</option>
-                    <option value="White">white</option>
+                    <option value="White">White</option>
                 </select>
             </div>
-            
 
-            <!-- Modular Descriptor: Location (Step 2 requirement) -->
+            <!-- Modular Size Descriptor -->
             <div class="form-group">
-                <label for="locationFound">-- Select Location --</label>
+                <label for="size">Size (Descriptor):</label>
+                <select id="size" required>
+                    <option value="">-- Select Size --</option>
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                </select>
+            </div>
+
+            <!-- Modular Location Descriptor -->
+            <div class="form-group">
+                <label for="locationFound">Location:</label>
                 <select id="locationFound" required>
                     <option value="">-- Select Location --</option>
                     <option value="Old Main">Old Main</option>
@@ -100,14 +112,11 @@
     <script>
         let currentMode = ""; // Tracks if user chose Lost, Found, or Admin
 
-        // STEP 1: Handle button clicks and update the dynamic header
+        // Handle button clicks and update the dynamic header
         function navigateToSubmission(mode) {
             currentMode = mode;
             document.getElementById('home-view').classList.add('hidden');
             document.getElementById('submission-view').classList.remove('hidden');
-            
-            // Updates header text to match requested format: <"[User] submission">
-            document.getElementById('submission-headerinnerText', `${currentMode} Submission`);
             document.getElementById('submission-header').textContent = `${currentMode} Submission`;
         }
 
@@ -119,14 +128,16 @@
             document.getElementById('home-view').classList.remove('hidden');
         }
 
-        // STEP 3: Send data to Java Backend -> Firebase, then display summary
+        // Send data to Java Backend -> Firebase, then display summary
         async function submitItemToBackend(event) {
             event.preventDefault();
 
-            // Gather form data into a JavaScript object matching our Java Item model
+            // Gather form data including the unique ID generation and color descriptor
             const itemData = {
+                id: 'item_' + Date.now(), // Generates a unique string ID for Firestore
                 status: currentMode,
                 category: document.getElementById('category').value,
+                color: document.getElementById('color').value,
                 description: document.getElementById('description').value,
                 locationFound: document.getElementById('locationFound').value,
                 foundername: document.getElementById('foundername').value,
@@ -134,8 +145,8 @@
             };
 
             try {
-                // Send POST request to Java backend API
-                const response = await fetch('/api/items/submit', {
+                // Send POST request to Java backend API endpoint
+                const response = await fetch('/api/items', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(itemData)
@@ -143,19 +154,18 @@
 
                 if (!response.ok) throw new Error('Failed to save to database');
 
-                const savedItem = await response.json();
-
-                // Display summary view with database response
+                // Display summary view 
                 document.getElementById('submission-view').classList.add('hidden');
                 document.getElementById('summary-view').classList.remove('hidden');
 
                 document.getElementById('summary-content').innerHTML = `
-                    <p><strong>ID:</strong> ${savedItem.id}</p>
-                    <p><strong>Type:</strong> ${savedItem.status}</p>
-                    <p><strong>Category:</strong> ${savedItem.category}</p>
-                    <p><strong>Description:</strong> ${savedItem.description}</p>
-                    <p><strong>Location:</strong> ${savedItem.locationFound}</p>
-                    <p><strong>Submitted By:</strong> ${savedItem.foundername}</p>
+                    <p><strong>ID:</strong> ${itemData.id}</p>
+                    <p><strong>Type:</strong> ${itemData.status}</p>
+                    <p><strong>Category:</strong> ${itemData.category}</p>
+                    <p><strong>Color:</strong> ${itemData.color}</p>
+                    <p><strong>Description:</strong> ${itemData.description}</p>
+                    <p><strong>Location:</strong> ${itemData.locationFound}</p>
+                    <p><strong>Submitted By:</strong> ${itemData.foundername}</p>
                 `;
             } catch (error) {
                 alert('Error submitting item: ' + error.message);

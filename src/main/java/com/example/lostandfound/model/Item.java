@@ -1,4 +1,5 @@
-package model;
+package com.example.lostandfound.model;
+
 //added imports for flexibility and firebase compatibility - Nate
 import com.google.cloud.firestore.annotation.DocumentId;
 
@@ -10,6 +11,8 @@ public class Item {
 
     private String status;        //lost or found
     private String category;      //Modular descriptor
+    private String color;         //color of the item
+    private String size;          //size of the item
     private String description;   //extra details 
     private String location;      //location where item was found (shortened for easier use)
     private String foundername;   //Name of the user submitting
@@ -41,6 +44,14 @@ public class Item {
     //Category
     public String getCategory() { return category;}
     public void setCategory(String category) { this.category = category; }
+
+    //Color
+    public String getColor() { return color; }
+    public void setColor(String color) { this.color = color; }
+
+    //Size
+    public String getSize() { return size; }
+    public void setSize(String size) { this.size = size; }
 
     //Description
     public String getDescription() { return description; }
