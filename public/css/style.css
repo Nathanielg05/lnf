@@ -1,0 +1,15 @@
+/* Background of site*/
+body {
+    background-color: navy;
+    color:white;
+    font-family: sans-serif;
+    padding: 20px;
+}
+/* Buttons desing */
+button{
+    background-color: orange;
+    color:black;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+}
