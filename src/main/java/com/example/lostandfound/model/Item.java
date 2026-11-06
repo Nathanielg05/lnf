@@ -22,9 +22,11 @@ public class Item {
     public Item() {}
 
     //For new submission
-    public Item(String status, String category, String description, String location, String foundername){
+    public Item(String status, String category, String color, String size, String description, String location, String foundername){
         this.status = status;
         this.category = category;
+        this.color = color;
+        this.size = size;
         this.description = description;
         this.location = location;
         this.foundername = foundername;
@@ -58,8 +60,8 @@ public class Item {
     public void setDescription(String description) { this.description = description; }
 
     //Location
-    public String getlocation() { return location; }
-    public void setlocation(String location) { this.location = location; }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
 
     //Founder Name
     public String getFoundername() { return foundername; }
